@@ -17,4 +17,4 @@ CFLAGS+=	-ggdb -pipe -Wuninitialized -O2 -fmessage-length=0
 
 CPPFLAGS=	-I ${GOROOT}/include
 
-LDFLAGS=	-static -L ${GOTOOLDIR} -l9 -lbio 
+LDFLAGS=	-static -L ${GOTOOLDIR} -l9 -lbio
