@@ -1,0 +1,20 @@
+#
+# plan9 C construction file
+# works with a working go 1.4.2 installation
+#
+
+CC=gcc
+
+GOROOT=		${shell go env GOROOT}
+GOTOOLDIR=	$(shell go env GOTOOLDIR | sed -e 's/tool/obj/g')
+
+CFLAGS=		-Wall -Wstrict-prototypes -Wextra -Wunused -Wno-sign-compare
+CFLAGS+=	-Wno-missing-braces -Wno-parentheses -Wno-unknown-pragmas
+CFLAGS+=	-Wno-switch -Wno-comment -Wno-missing-field-initializers
+CFLAGS+=	-Werror -fno-common
+
+CFLAGS+=	-ggdb -pipe -Wuninitialized -O2 -fmessage-length=0
+
+CPPFLAGS=	-I ${GOROOT}/include
+
+LDFLAGS=	-static -L ${GOTOOLDIR} -l9 -lbio 
