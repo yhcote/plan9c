@@ -3,9 +3,9 @@ include Makefile.p9c
 PROG=		hello
 OBJS=		hello.o
 
-all: $(OBJS) ${PROG}
+all: ${PROG}
 
-hello:
+hello: ${OBJS}
 	${CC} -o $@ ${OBJS} ${LDFLAGS}
 
 clean:
