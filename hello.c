@@ -3,6 +3,15 @@
 #include <libc.h>
 #include <bio.h>
 
+void percent(void) { }
+void slash(void) { }
+/* a number in [ ]'s set the index */
+void    (*func[128])(void) =
+{
+	['%'] percent,
+	['/'] slash,
+};
+
 void
 main(int argc, char *argv[])
 {
