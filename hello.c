@@ -4,7 +4,7 @@
 #include <bio.h>
 
 void
-main(void)
+main(int argc, char *argv[])
 {
 	char *s;
 	Biobuf bin;
@@ -12,7 +12,13 @@ main(void)
 
 	/* lib9 (libc) test */
 	print("%C  sri maha ganapataye namaha\n\n", (Rune)strtol("0950", nil, 16));
-	print("27 is binary %b\n\n", 27);
+	print("28 is binary %b\n\n", 27);
+
+	ARGBEGIN {
+	case 'i':
+		print("line option: -%c\n", ARGC());
+		break;
+	} ARGEND
 
 	/* libbio test */
 	Binit(&bin, 0, OREAD);
