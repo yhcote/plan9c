@@ -1,9 +1,16 @@
 #
-# plan9 C construction file
-# works with a working go 1.4.2 installation
+# Copyright (c) 2015, Yannick Cote <yanick@divyan.org>
+#
+# Builds C programs with plan9 C and link them statically with musl libc for
+# a fast clean and compact freestanding executable binary.
+#
+# Requirements:
+#	1- A go 1.4.2 source tree fully compiled. The goal is to have
+#	   access to plan9 libs copied at $GOROOT/pkg/obj/$ARCH
+#	2- A working installation of the musl library.
 #
 
-CC=gcc
+CC=musl-gcc
 
 GOROOT=		${shell go env GOROOT}
 GOTOOLDIR=	$(shell go env GOTOOLDIR | sed -e 's/tool/obj/g')
@@ -17,4 +24,4 @@ CFLAGS+=	-ggdb -pipe -Wuninitialized -O2 -fmessage-length=0
 
 CPPFLAGS=	-I ${GOROOT}/include
 
-LDFLAGS=	-static -L ${GOTOOLDIR} -l9 -lbio
+LDFLAGS=	-static -L ${GOTOOLDIR} -lbio -l9

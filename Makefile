@@ -10,3 +10,6 @@ hello: ${OBJS}
 
 clean:
 	rm -f ${OBJS} ${PROG}
+
+strip:
+	strip -s ${PROG}
