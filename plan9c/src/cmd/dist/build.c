@@ -374,7 +374,7 @@ setup(void)
 	bpathf(&b, "%s/lib/libgc.a", goroot);
 	if(isfile(bstr(&b)))
 		xremoveall(bpathf(&b, "%s/lib", goroot));
-	p = bpathf(&b, "%s/lib/%s_%s", goroot, gohostos, gohostarch);
+	p = bpathf(&b, "%s/lib", goroot);
 	if(rebuildall)
 		xremoveall(p);
 	xmkdirall(p);
@@ -481,17 +481,17 @@ static struct {
 	{"cmd/5c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/6c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/8c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/5g", {
 		"../gc/cplx.c",
@@ -499,7 +499,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/6g", {
 		"../gc/cplx.c",
@@ -507,7 +507,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/8g", {
 		"../gc/cplx.c",
@@ -515,7 +515,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/5l", {
 		"../ld/*",
@@ -530,9 +530,9 @@ static struct {
 		"zdefaultcc.go",
 	}},
 	{"cmd/", {
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/liblink.a",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/libbio.a",
-		"$GOROOT/lib/$GOHOSTOS_$GOHOSTARCH/lib9.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/liblink.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libbio.a",
+		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/lib9.a",
 	}},
 	{"runtime", {
 		"zaexperiment.h", // must sort above zasm
@@ -663,7 +663,7 @@ install(char *dir)
 		if(!hasprefix(name, "lib"))
 			prefix = "lib";
 		targ = link.len;
-		vadd(&link, bpathf(&b, "%s/lib/%s_%s/%s%s.a", goroot, gohostos, gohostarch, prefix, name));
+		vadd(&link, bpathf(&b, "%s/lib/%s%s.a", goroot, prefix, name));
 	} else {
 		// C command. Use gccargs and ldargs.
 		if(streq(gohostos, "plan9")) {
@@ -800,25 +800,6 @@ install(char *dir)
 	if(!stale)
 		goto out;
 
-	// For package runtime, copy some files into the work space.
-	if(streq(dir, "runtime")) {
-		copyfile(bpathf(&b, "%s/arch_GOARCH.h", workdir),
-			bpathf(&b1, "%s/arch_%s.h", bstr(&path), goarch), 0);
-		copyfile(bpathf(&b, "%s/defs_GOOS_GOARCH.h", workdir),
-			bpathf(&b1, "%s/defs_%s_%s.h", bstr(&path), goos, goarch), 0);
-		p = bpathf(&b1, "%s/signal_%s_%s.h", bstr(&path), goos, goarch);
-		if(isfile(p))
-			copyfile(bpathf(&b, "%s/signal_GOOS_GOARCH.h", workdir), p, 0);
-		copyfile(bpathf(&b, "%s/os_GOOS.h", workdir),
-			bpathf(&b1, "%s/os_%s.h", bstr(&path), goos), 0);
-		copyfile(bpathf(&b, "%s/signals_GOOS.h", workdir),
-			bpathf(&b1, "%s/signals_%s.h", bstr(&path), goos), 0);
-		copyfile(bpathf(&b, "%s/pkg/%s_%s/textflag.h", goroot, goos, goarch),
-			bpathf(&b1, "%s/src/cmd/ld/textflag.h", goroot), 0);
-		copyfile(bpathf(&b, "%s/pkg/%s_%s/funcdata.h", goroot, goos, goarch),
-			bpathf(&b1, "%s/src/runtime/funcdata.h", goroot), 0);
-	}
-
 	// Generate any missing files; regenerate existing ones.
 	for(i=0; i<files.len; i++) {
 		p = files.p[i];
@@ -844,14 +825,6 @@ install(char *dir)
 		if(find(p, missing.p, missing.len) >= 0)
 			fatal("missing file %s", p);
 	built:;
-	}
-
-	// One more copy for package runtime.
-	// The last batch was required for the generators.
-	// This one is generated.
-	if(streq(dir, "runtime")) {
-		copyfile(bpathf(&b, "%s/zasm_GOOS_GOARCH.h", workdir),
-			bpathf(&b1, "%s/zasm_%s_%s.h", bstr(&path), goos, goarch), 0);
 	}
 
 	if((!streq(goos, gohostos) || !streq(goarch, gohostarch)) && isgo) {
@@ -952,7 +925,7 @@ install(char *dir)
 			// on the command line.  You have to leave the object files
 			// lying around too.  Leave them in lib/, which does not
 			// get removed when this tool exits.
-			bpathf(&b1, "%s/lib/%s", goroot, dir);
+			bpathf(&b1, "%s/%s", goroot, dir);
 			xmkdirall(bstr(&b1));
 			bpathf(&b, "%s/%s", bstr(&b1), lastelem(files.p[i]));
 			doclean = 0;
@@ -1170,7 +1143,7 @@ clean(void)
 
 	if(rebuildall) {
 		// Remove object tree.
-		xremoveall(bpathf(&b, "%s/lib/%s_%s", goroot, gohostos, gohostarch));
+		xremoveall(bpathf(&b, "%s/lib", goroot));
 
 		// Remove cached version info.
 		xremove(bpathf(&b, "%s/VERSION.cache", goroot));

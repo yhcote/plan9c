@@ -5,23 +5,19 @@
 # a fast clean and compact freestanding executable binary.
 #
 # Requirements:
-#	1- A go 1.4.2 source tree fully compiled. The goal is to have
-#	   access to plan9 libs copied at $GOROOT/pkg/obj/$ARCH
-#	2- A working installation of the musl library.
+#	1- A working installation of the musl library.
 #
 
+PLAN9CROOT=plan9c
 CC=musl-gcc
-
-GOROOT=		${shell go env GOROOT}
-GOTOOLDIR=	$(shell go env GOTOOLDIR | sed -e 's/tool/obj/g')
 
 CFLAGS=		-Wall -Wstrict-prototypes -Wextra -Wunused -Wno-sign-compare
 CFLAGS+=	-Wno-missing-braces -Wno-parentheses -Wno-unknown-pragmas
 CFLAGS+=	-Wno-switch -Wno-comment -Wno-missing-field-initializers
 CFLAGS+=	-Werror -fno-common
 
-CFLAGS+=	-ggdb -pipe -Wuninitialized -O2 -fmessage-length=0
+CFLAGS+=	-Og -ggdb -pipe -Wuninitialized -fmessage-length=0
 
-CPPFLAGS=	-I ${GOROOT}/include
+CPPFLAGS=	-I ${PLAN9CROOT}/include
 
-LDFLAGS=	-static -L ${GOTOOLDIR} -lbio -l9
+LDFLAGS=	-static -L ${PLAN9CROOT}/lib -lbio -l9
