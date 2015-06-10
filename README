@@ -1,0 +1,51 @@
+Motivation:
+-----------
+
+The goal of this project is to allow people to easily write programs using
+plan9's C programming environment on their platform of choice. The provided
+Makefile.p9c will also link statically by default against the musl libc
+library. This has the benefit of compiling programs that are fast, easily
+transferable yet small. Indeed, our hello.c example only weights 60K stripped
+of symbols. Even though the source code is small, it does include code from
+both lib9.a and libbio.a.
+
+Background:
+-----------
+
+Plan9 has its own ANSI C compiler with extensions that are now mostly
+supported by the newer C standards and also has its own core routines (libc)
+and buffered I/O (libbio) libraries. A typical program will probably only need
+to include u.h, libc.h and libbio.h.
+
+For more information on how to write programs using the plan9 libraries :
+
+ http://plan9.bell-labs.com/sys/doc/comp.html
+ http://doc.cat-v.org/plan_9/programming/c_programming_in_plan_9
+
+Because of its compact size and fast performing qualities, plan9 base
+programming enviroment has been ported to other Unix-like platforms. The
+system is available at :
+
+ https://github.com/9fans/plan9port
+
+Up to version 1.4.2, go C bootstrap included a copy of that base
+cross-platform programming environment. Our project includes that last version
+of the source code.
+
+Requirements:
+-------------
+
+* musl libc, our Makefile.p9c uses musl-gcc, see http://www.musl-libc.org/ or
+  check your distribution package manager for more musl libc installation
+  information.
+
+To get started:
+---------------
+
+ ./plan9c/build.sh	<= builds plan9 C libraries copied from Go 1.4.2
+ make			<= builds our example hello.c against lib9 & libbio
+ ./hello		<= test the installation
+
+To create a new project, include the Makefile.p9c file to your own project
+Makefile. Like the Makefile provided with the hello.c example. You will only
+have to modify Makefile, not Makefile.p9c for simple projects.
