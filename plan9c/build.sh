@@ -2,12 +2,15 @@
 
 set -e
 
-export GOROOT=`git rev-parse --show-toplevel`/plan9c
+TOP=`git rev-parse --show-toplevel`
+PLAN9C=$TOP/plan9c;	export PLAN9C
 
 # build dist
-make -C src/cmd/dist clean
-make -C src/cmd/dist all
+make -C $PLAN9C/src/cmd/dist all
 
 # use dist and build libs
-src/cmd/dist/dist clean -v
-src/cmd/dist/dist bootstrap -v
+$PLAN9C/src/cmd/dist/dist clean -v
+$PLAN9C/src/cmd/dist/dist bootstrap -v
+
+# remove dist
+make -C $PLAN9C/src/cmd/dist clean

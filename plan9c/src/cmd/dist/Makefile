@@ -1,4 +1,4 @@
-CFLAGS=-O2 -Wall -Werror -I. '-DGOROOT_FINAL="${GOROOT}"'
+CFLAGS=-O2 -Wall -Werror -I. '-DPLAN9C_FINAL="${PLAN9C}"'
 
 OBJS=	arm.o \
 	buf.o \

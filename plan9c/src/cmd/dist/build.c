@@ -18,8 +18,8 @@ char *gohostos;
 char *goos;
 char *goarm;
 char *go386;
-char *goroot = GOROOT_FINAL;
-char *goroot_final = GOROOT_FINAL;
+char *goroot = PLAN9C_FINAL;
+char *goroot_final = PLAN9C_FINAL;
 char *goextlinkenabled = "";
 char *workdir;
 char *tooldir;
@@ -88,7 +88,7 @@ init(void)
 
 	binit(&b);
 
-	xgetenv(&b, "GOROOT");
+	xgetenv(&b, "PLAN9C");
 	if(b.len > 0) {
 		// if not "/", then strip trailing path separator
 		if(b.len >= 2 && b.p[b.len - 1] == slash[0])
@@ -119,8 +119,8 @@ init(void)
 
 	p = bpathf(&b, "%s/include/u.h", goroot);
 	if(!isfile(p)) {
-		fatal("$GOROOT is not set correctly or not exported\n"
-			"\tGOROOT=%s\n"
+		fatal("$PLAN9C is not set correctly or not exported\n"
+			"\tPLAN9C=%s\n"
 			"\t%s does not exist", goroot, p);
 	}
 
@@ -189,7 +189,7 @@ init(void)
 	}
 	defaultcxxtarget = btake(&b);
 
-	xsetenv("GOROOT", goroot);
+	xsetenv("PLAN9C", goroot);
 	xsetenv("GOARCH", goarch);
 	xsetenv("GOOS", goos);
 	xsetenv("GOARM", goarm);
@@ -283,7 +283,7 @@ findgoversion(void)
 	binit(&bmore);
 	binit(&branch);
 
-	// The $GOROOT/VERSION file takes priority, for distributions
+	// The $PLAN9C/VERSION file takes priority, for distributions
 	// without the source repo.
 	bpathf(&path, "%s/VERSION", goroot);
 	if(isfile(bstr(&path))) {
@@ -297,7 +297,7 @@ findgoversion(void)
 			goto done;
 	}
 
-	// The $GOROOT/VERSION.cache file is a cache to avoid invoking
+	// The $PLAN9C/VERSION.cache file is a cache to avoid invoking
 	// git every time we run this command.  Unlike VERSION, it gets
 	// deleted by the clean command.
 	bpathf(&path, "%s/VERSION.cache", goroot);
@@ -348,7 +348,7 @@ done:
  * Initial tree setup.
  */
 
-// Unreleased directories (relative to $GOROOT) that should
+// Unreleased directories (relative to $PLAN9C) that should
 // not be in release branches.
 static char *unreleased[] = {
 	"src/cmd/link",
@@ -440,28 +440,28 @@ static struct {
 	char *dep[20];  // dependency tweaks for targets with that prefix
 } deptab[] = {
 	{"lib9", {
-		"$GOROOT/include/u.h",
-		"$GOROOT/include/utf.h",
-		"$GOROOT/include/fmt.h",
-		"$GOROOT/include/libc.h",
+		"$PLAN9C/include/u.h",
+		"$PLAN9C/include/utf.h",
+		"$PLAN9C/include/fmt.h",
+		"$PLAN9C/include/libc.h",
 		"fmt/*",
 		"utf/*",
 	}},
 	{"libbio", {
-		"$GOROOT/include/u.h",
-		"$GOROOT/include/utf.h",
-		"$GOROOT/include/fmt.h",
-		"$GOROOT/include/libc.h",
-		"$GOROOT/include/bio.h",
+		"$PLAN9C/include/u.h",
+		"$PLAN9C/include/utf.h",
+		"$PLAN9C/include/fmt.h",
+		"$PLAN9C/include/libc.h",
+		"$PLAN9C/include/bio.h",
 	}},
 	{"liblink", {
-		"$GOROOT/include/u.h",
-		"$GOROOT/include/utf.h",
-		"$GOROOT/include/fmt.h",
-		"$GOROOT/include/libc.h",
-		"$GOROOT/include/bio.h",
-		"$GOROOT/include/ar.h",
-		"$GOROOT/include/link.h",
+		"$PLAN9C/include/u.h",
+		"$PLAN9C/include/utf.h",
+		"$PLAN9C/include/fmt.h",
+		"$PLAN9C/include/libc.h",
+		"$PLAN9C/include/bio.h",
+		"$PLAN9C/include/ar.h",
+		"$PLAN9C/include/link.h",
 		"anames5.c",
 		"anames6.c",
 		"anames8.c",
@@ -481,17 +481,17 @@ static struct {
 	{"cmd/5c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/6c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/8c", {
 		"../cc/pgen.c",
 		"../cc/pswt.c",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libcc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libcc.a",
 	}},
 	{"cmd/5g", {
 		"../gc/cplx.c",
@@ -499,7 +499,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/6g", {
 		"../gc/cplx.c",
@@ -507,7 +507,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/8g", {
 		"../gc/cplx.c",
@@ -515,7 +515,7 @@ static struct {
 		"../gc/plive.c",
 		"../gc/popt.c",
 		"../gc/popt.h",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libgc.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libgc.a",
 	}},
 	{"cmd/5l", {
 		"../ld/*",
@@ -530,9 +530,9 @@ static struct {
 		"zdefaultcc.go",
 	}},
 	{"cmd/", {
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/liblink.a",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/libbio.a",
-		"$GOROOT/$GOHOSTOS_$GOHOSTARCH/lib9.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/liblink.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/libbio.a",
+		"$PLAN9C/$GOHOSTOS_$GOHOSTARCH/lib9.a",
 	}},
 	{"runtime", {
 		"zaexperiment.h", // must sort above zasm
@@ -576,7 +576,7 @@ static struct {
 };
 
 // install installs the library, package, or binary associated with dir,
-// which is relative to $GOROOT/src.
+// which is relative to $PLAN9C/src.
 static void
 install(char *dir)
 {
@@ -713,7 +713,7 @@ install(char *dir)
 			for(j=0; (p=deptab[i].dep[j])!=nil; j++) {
 				breset(&b1);
 				bwritestr(&b1, p);
-				bsubst(&b1, "$GOROOT", goroot);
+				bsubst(&b1, "$PLAN9C", goroot);
 				bsubst(&b1, "$GOOS", goos);
 				bsubst(&b1, "$GOARCH", goarch);
 				bsubst(&b1, "$GOHOSTOS", gohostos);
@@ -879,7 +879,7 @@ install(char *dir)
 				bprintf(&b1, "%s", goroot_final);
 				bsubst(&b1, "\\", "\\\\");  // turn into C string
 				vadd(&compile, "-D");
-				vadd(&compile, bprintf(&b, "GOROOT=\"%s\"", bstr(&b1)));
+				vadd(&compile, bprintf(&b, "PLAN9C=\"%s\"", bstr(&b1)));
 				vadd(&compile, "-D");
 				vadd(&compile, bprintf(&b, "GOVERSION=\"%s\"", goversion));
 				vadd(&compile, "-D");
@@ -1212,7 +1212,7 @@ cmdenv(int argc, char **argv)
 
 	xprintf(format, "CC", defaultcc);
 	xprintf(format, "CC_FOR_TARGET", defaultcctarget);
-	xprintf(format, "GOROOT", goroot);
+	xprintf(format, "PLAN9C", goroot);
 	xprintf(format, "GOBIN", gobin);
 	xprintf(format, "GOARCH", goarch);
 	xprintf(format, "GOOS", goos);
@@ -1271,8 +1271,8 @@ cmdbootstrap(int argc, char **argv)
 	goversion = findgoversion();
 	setup();
 
-	xsetenv("GOROOT", goroot);
-	xsetenv("GOROOT_FINAL", goroot_final);
+	xsetenv("PLAN9C", goroot);
+	xsetenv("PLAN9C_FINAL", goroot_final);
 
 	// For the main bootstrap, building for host os/arch.
 	oldgoos = goos;

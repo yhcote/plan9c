@@ -31,7 +31,7 @@ getgoarch(void)
 char*
 getgoroot(void)
 {
-	return defgetenv("GOROOT", GOROOT);
+	return defgetenv("PLAN9C", PLAN9C);
 }
 
 char*
