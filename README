@@ -3,11 +3,12 @@ Motivation:
 
 The goal of this project is to allow people to easily write programs using
 plan9's C programming environment on their platform of choice. The provided
-Makefile.p9c will also link statically by default against the musl libc
-library. This has the benefit of compiling programs that are fast, easily
-transferable yet small. Indeed, our hello.c example only weights 60K stripped
-of symbols. Even though the source code is small, it does include code from
-both lib9.a and libbio.a.
+Makefile.p9c will also link statically by default against the musl libc library
+if available when installing on Linux. This has the benefit of compiling
+programs that are fast, easily transferable yet small. Indeed, our hello.c
+example only weights 60K stripped of symbols (125K OpenBSD's libc and 752K
+ArchLinux's glibc). Even though the source code is small, it does include code
+from both lib9.a and libbio.a.
 
 Background:
 -----------
@@ -35,7 +36,7 @@ of the source code.
 Requirements:
 -------------
 
-* musl libc, our Makefile.p9c uses musl-gcc when available on Linux system,
+* musl libc, our Makefile.p9c uses musl-gcc when available on Linux systems,
   see http://www.musl-libc.org/ or check your distribution package manager for
   more musl libc installation information.
 
@@ -49,12 +50,19 @@ To get started:
  make		<= builds our example hello.c against lib9 & libbio
  ./hello	<= test the installation
 
- make strip	<= optional: remove symbols; check your binary size
+ make strip	<= optional: remove symbols; check your binary size!
 
 To create a new project, include the Makefile.p9c file to your own project
 Makefile. Like the Makefile provided with the hello.c example. You will only
 have to modify Makefile, not Makefile.p9c for simple projects.
 
-Enjoy !
+Credits:
+--------
 
- - Yannick
+The plan9c folder comes from the go 1.4.2 source tree. Modifications were done
+to the build system (dist) mostly. The go authors holds the copyrights. This
+subset of the plan9port uses a permissive BSD license which is very similar to
+the license of this package (ISC license). Finaly thanks to the ken, rob, russ,
+and the plan9 team to come up with all of that in the first place.
+
+Enjoy !
