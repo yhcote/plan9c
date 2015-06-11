@@ -76,3 +76,5 @@ CPPFLAGS=	-I ${PLAN9C}/include
 
 LDFLAGS=	-static -L ${PLAN9C}/lib -lbio -l9
 EOF
+
+echo ""; echo "Success ! Makefile.p9c ready for use !"
