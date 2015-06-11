@@ -34,8 +34,8 @@ main(int argc, char *argv[])
 	Binit(&bout, 1, OWRITE);
 
 	print("Brdstr(): read a line: ");
-	s = Brdstr(&bin, '\n', '\0');
-	Bprint(&bout, "Bprint(): %s", s);
+	s = Brdstr(&bin, '\n', 1);
+	Bprint(&bout, "Bprint(): %s\n", s);
 
 	exits(0);
 }
