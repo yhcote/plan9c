@@ -42,9 +42,9 @@ Requirements:
 To get started:
 ---------------
 
- ./plan9c/build.sh	<= builds plan9 C libraries copied from Go 1.4.2
- make			<= builds our example hello.c against lib9 & libbio
- ./hello		<= test the installation
+ ./install.sh	<= builds plan9 C libraries and generate your Makefile.p9c
+ make		<= builds our example hello.c against lib9 & libbio
+ ./hello	<= test the installation
 
 To create a new project, include the Makefile.p9c file to your own project
 Makefile. Like the Makefile provided with the hello.c example. You will only
