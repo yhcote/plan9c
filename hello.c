@@ -1,4 +1,4 @@
-/* plan9 C example file */
+/* plan9 C example/installation test file */
 #include <u.h>
 #include <libc.h>
 #include <bio.h>

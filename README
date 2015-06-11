@@ -35,9 +35,12 @@ of the source code.
 Requirements:
 -------------
 
-* musl libc, our Makefile.p9c uses musl-gcc, see http://www.musl-libc.org/ or
-  check your distribution package manager for more musl libc installation
-  information.
+* musl libc, our Makefile.p9c uses musl-gcc when available on Linux system,
+  see http://www.musl-libc.org/ or check your distribution package manager for
+  more musl libc installation information.
+
+NOTE: plan9c will still install and work without musl libc. Static binary
+compactness will depend on the host's libc programs are linked against.
 
 To get started:
 ---------------
@@ -46,6 +49,12 @@ To get started:
  make		<= builds our example hello.c against lib9 & libbio
  ./hello	<= test the installation
 
+ make strip	<= optional: remove symbols; check your binary size
+
 To create a new project, include the Makefile.p9c file to your own project
 Makefile. Like the Makefile provided with the hello.c example. You will only
 have to modify Makefile, not Makefile.p9c for simple projects.
+
+Enjoy !
+
+ - Yannick
