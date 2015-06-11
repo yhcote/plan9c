@@ -41,7 +41,7 @@ $PLAN9C/src/cmd/dist/dist bootstrap -v
 #
 echo "===> generating Makefile.p9c for host"
 
-CC=`musl-gcc 2>/dev/null && echo "musl-gcc" || echo "cc"`
+CC=`musl-gcc -v >/dev/null 2>&1 && echo "musl-gcc" || echo "cc"`
 if [ $CC = "cc" ]; then
 	echo "*** plan9c builds smaller static binaries with musl libc installed"
 fi
