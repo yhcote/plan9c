@@ -11,8 +11,17 @@ OBJS=	arm.o \
 	unix.o \
 	windows.o
 
-all: $(OBJS)
-	${CC} -static -o dist ${OBJS}
+PROG=dist
+
+.c.o:
+	@echo " CC $<"
+	@${CC} ${CFLAGS} -c $<
+
+all: $(OBJS) ${PROG}
+
+${PROG}:
+	@echo " LINK $@"
+	@${CC} -static -o dist ${OBJS}
 
 clean:
-	rm -f ${OBJS} dist
+	@rm -f ${OBJS} ${PROG}
