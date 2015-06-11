@@ -43,7 +43,10 @@ echo "===> generating Makefile.p9c for host"
 
 CC=`musl-gcc -v >/dev/null 2>&1 && echo "musl-gcc" || echo "cc"`
 if [ $CC = "cc" ]; then
-	echo "*** plan9c builds smaller static binaries with musl libc installed"
+	echo "***"
+	echo "*** WARNING: plan9c builds smaller static binaries with musl"
+	echo "***          libc installed"
+	echo "***"
 fi
 
 echo -n "generate release (r) or debug (d) Makefile.p9c [R/d]? "
